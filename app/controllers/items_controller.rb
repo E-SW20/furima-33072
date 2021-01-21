@@ -1,7 +1,6 @@
 class ItemsController < ApplicationController
   skip_before_action :authenticate_user!, only: :index
   def index
-    #@items = Item.all.order("created_at DESC")
     @items = Item.includes(:user).order("created_at DESC")
   end
   
