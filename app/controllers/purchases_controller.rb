@@ -6,7 +6,14 @@ class PurchasesController < ApplicationController
   end
 
   def create
+    @address = Address.new(address_params)
+    @address.save
 
   end
 
+  private
+
+  def メソッド名
+    params.permit(指定のカラムを記述する)
+  end
 end
