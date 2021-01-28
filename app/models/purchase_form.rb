@@ -7,16 +7,18 @@ class PurchaseForm
     validates :municipality
     validates :address
     validates :phone_number
-    validates :purchase
+    validates :purchase_id
     validates :user_id
     validates :item_id
   end
-  validates :prefecture, numericality: { other_than: 0, message: "can't be blank" }
+  validates :prefectures_id, numericality: { other_than: 0, message: "can't be blank" }
 
 
   def save
-    Address.create(postal_code: postal_code, prefectures_id: prefectures_id, municipality: municipality, address: address, building_name: building_name,phone_number: phone_number,user_id: user.id)
-    Purchase.create(user_id: user_id, item_id: item.id)
+
+    purchase = Purchase.create(user_id: user_id, item_id: item_id)
+    Address.create(postal_code: postal_code, prefectures_id: prefectures_id, municipality: municipality,
+                   address: address, building_name: building_name, phone_number: phone_number ,purchase_id: purchase.id)
   end
 end
 
