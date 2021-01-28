@@ -10,6 +10,7 @@ class PurchaseForm
     validates :user_id
     validates :item_id
     validates :prefectures_id, numericality: { other_than: 0}
+    validates :token
   end
 
 
