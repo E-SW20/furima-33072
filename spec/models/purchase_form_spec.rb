@@ -27,7 +27,7 @@ RSpec.describe PurchaseForm, type: :model do
       it 'prefectures_idが0だと購入できない' do
         @form.prefectures_id = 0
         @form.valid?
-        expect(@form.errors.full_messages).to include("Prefectures must be other than 0")
+        expect(@form.errors.full_messages).to include('Prefectures must be other than 0')
       end
       it 'prefectures_idが空だと購入できない' do
         @form.prefectures_id = ''
@@ -52,27 +52,27 @@ RSpec.describe PurchaseForm, type: :model do
       it '郵便番号にハイフンがないと購入できない' do
         @form.postal_code = '1234567'
         @form.valid?
-        expect(@form.errors.full_messages).to include("Postal code is invalid")
+        expect(@form.errors.full_messages).to include('Postal code is invalid')
       end
       it '電話番号にハイフンがあると購入できない' do
         @form.phone_number = '090-1234-5678'
         @form.valid?
-        expect(@form.errors.full_messages).to include("Phone number is invalid")
+        expect(@form.errors.full_messages).to include('Phone number is invalid')
       end
       it '電話番号に全角数字があると購入できない' do
         @form.phone_number = '０９０１２３４５６７８'
         @form.valid?
-        expect(@form.errors.full_messages).to include("Phone number is invalid")
+        expect(@form.errors.full_messages).to include('Phone number is invalid')
       end
       it '電話番号に英数字混合があると購入できない' do
         @form.phone_number = 'Abc12345678'
         @form.valid?
-        expect(@form.errors.full_messages).to include("Phone number is invalid")
+        expect(@form.errors.full_messages).to include('Phone number is invalid')
       end
       it '電話番号が11桁以内でないと購入できない' do
         @form.phone_number = '090123456789'
         @form.valid?
-        expect(@form.errors.full_messages).to include("Phone number is invalid")
+        expect(@form.errors.full_messages).to include('Phone number is invalid')
       end
       it 'user_idが空だと購入できない' do
         @form.user_id = nil
@@ -92,4 +92,3 @@ RSpec.describe PurchaseForm, type: :model do
     end
   end
 end
-
