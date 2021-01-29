@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index, :show]
   before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
+
   def index
     @items = Item.includes(:user).order('created_at DESC')
   end
@@ -22,15 +23,11 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    if current_user.id != @item.user_id
-      redirect_to root_path
-    else
-      render :edit
-    end
+    redirect_to root_path if current_user.id != @item.user_id || !@item.purchase.nil?
   end
 
   def update
-    if @item.update(item_params) && current_user.id == @item.user_id
+    if @item.update(item_params)
       redirect_to root_path
     else
       render :edit
@@ -38,17 +35,22 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    if  current_user.id == @item.user_id
-      @item.destroy
-      redirect_to root_path      
+    if user_signed_in? && current_user.id == @item.user.id
+      if @item.destroy
+        redirect_to root_path
+      else
+        render :show
+      end
+    else
+      redirect_to root_path
     end
   end
 
   private
 
   def item_params
-    params.require(:item).permit(:image, :name, :explanation, :category_id, :state_id, :delivery_price_id, :prefectures_id,
-                                 :delivery_time_id, :price).merge(user_id: current_user.id)
+    params.require(:item).permit(:name, :explanation, :category_id, :state_id, :delivery_price_id, :prefectures_id,
+                                 :delivery_time_id, :image, :price).merge(user_id: current_user.id)
   end
 
   def set_item
